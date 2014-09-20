@@ -119,7 +119,6 @@ func FromDockerContainer(id, image string, engine *Engine) (*Container, error) {
 			Cpus:        float64(info.Config.CpuShares) / 100.0 * engine.Cpus,
 			Memory:      float64(info.Config.Memory / 1024 / 1024),
 			Environment: env,
-			Cmd:         info.Config.Cmd,
 			Entrypoint:  info.Config.Entrypoint,
 			Hostname:    info.Config.Hostname,
 			Domainname:  info.Config.Domainname,

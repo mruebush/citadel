@@ -13,9 +13,6 @@ type Image struct {
 	// Memory is the amount of memory in MB for the container
 	Memory float64 `json:"memory,omitempty"`
 
-	// Cmd is the command to run in the container
-	Cmd []string `json:"cmd,omitempty"`
-
 	// Entrypoint is the entrypoint in the container
 	Entrypoint []string `json:"entrypoint,omitempty"`
 

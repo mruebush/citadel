@@ -88,7 +88,6 @@ func (e *Engine) Start(c *Container, pullImage bool) error {
 		PublishAllPorts: i.Publish,
 		PortBindings:    make(map[string][]dockerclient.PortBinding),
 		Links:           links,
-		VolumesFrom:     i.VolumesFrom,
 		Binds:           binds,
 		RestartPolicy: dockerclient.RestartPolicy{
 			Name:              i.RestartPolicy.Name,

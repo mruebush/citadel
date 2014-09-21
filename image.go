@@ -13,6 +13,9 @@ type Image struct {
 	// Memory is the amount of memory in MB for the container
 	Memory float64 `json:"memory,omitempty"`
 
+	// Entrypoint is the entrypoint in the container
+	Entrypoint []string `json:"entrypoint,omitempty"`
+
 	// Envionrment is the environment vars to set on the container
 	Environment map[string]string `json:"environment,omitempty"`
 

@@ -108,6 +108,11 @@ func FromDockerContainer(id, image string, engine *Engine) (*Container, error) {
 	if m := info.HostConfig.NetworkMode; m != "" {
 		networkMode = m
 	}
+	volDefs := info.Config.Volumes
+	vols := []string{}
+	for k, _ := range volDefs {
+		vols = append(vols, k)
+	}
 
 	container := &Container{
 		ID:     id,
@@ -118,6 +123,7 @@ func FromDockerContainer(id, image string, engine *Engine) (*Container, error) {
 			Name:        image,
 			Cpus:        float64(info.Config.CpuShares) / 100.0 * engine.Cpus,
 			Memory:      float64(info.Config.Memory / 1024 / 1024),
+			Volumes:     vols,
 			Environment: env,
 			Hostname:    info.Config.Hostname,
 			Domainname:  info.Config.Domainname,

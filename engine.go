@@ -58,6 +58,16 @@ func (e *Engine) Start(c *Container, pullImage bool) error {
 		fmt.Sprintf("_citadel_labels=%s", strings.Join(i.Labels, ",")),
 	)
 
+	vols := make(map[string]struct{})
+	binds := []string{}
+	for _, v := range i.Volumes {
+		if strings.Index(v, ":") > -1 {
+			cv := strings.Split(v, ":")
+			binds = append(binds, v)
+			v = cv[1]
+		}
+		vols[v] = struct{}{}
+	}
 	config := &dockerclient.ContainerConfig{
 		Hostname:     i.Hostname,
 		Domainname:   i.Domainname,
@@ -67,17 +77,18 @@ func (e *Engine) Start(c *Container, pullImage bool) error {
 		Env:          env,
 		CpuShares:    int(i.Cpus * 100.0 / e.Cpus),
 		ExposedPorts: make(map[string]struct{}),
+		Volumes:      vols,
 	}
 
 	links := []string{}
 	for k, v := range i.Links {
 		links = append(links, fmt.Sprintf("%s:%s", k, v))
 	}
-
 	hostConfig := &dockerclient.HostConfig{
 		PublishAllPorts: i.Publish,
 		PortBindings:    make(map[string][]dockerclient.PortBinding),
 		Links:           links,
+		Binds:           binds,
 		RestartPolicy: dockerclient.RestartPolicy{
 			Name:              i.RestartPolicy.Name,
 			MaximumRetryCount: i.RestartPolicy.MaximumRetryCount,

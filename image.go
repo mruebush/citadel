@@ -37,6 +37,9 @@ type Image struct {
 	// UserData is user defined data that is passed to the container
 	UserData map[string][]string `json:"user_data,omitempty"`
 
+	// Volumes are volumes on the same engine
+	Volumes []string `json:"volumes,omitempty"`
+
 	// Links are mappings to other containers running on the same engine
 	Links map[string]string `json:"links,omitempty"`
 

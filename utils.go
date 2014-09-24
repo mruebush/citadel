@@ -142,6 +142,7 @@ func FromDockerContainer(id, image string, engine *Engine) (*Container, error) {
 	if err := parsePortInformation(info, container); err != nil {
 		return nil, err
 	}
+	container.Image.BindPorts = container.Ports
 
 	return container, nil
 }

@@ -40,6 +40,14 @@ func (e *Engine) IsConnected() bool {
 	return e.client != nil
 }
 
+func (e *Engine) Pull(image string) error {
+	imageInfo := parseImageName(image)
+	if err := e.client.PullImage(imageInfo.Name, imageInfo.Tag); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (e *Engine) Start(c *Container, pullImage bool) error {
 	var (
 		err    error
@@ -107,9 +115,8 @@ func (e *Engine) Start(c *Container, pullImage bool) error {
 		}
 	}
 
-	imageInfo := parseImageName(i.Name)
 	if pullImage {
-		if err := client.PullImage(imageInfo.Name, imageInfo.Tag); err != nil {
+		if err := e.Pull(i.Name); err != nil {
 			return err
 		}
 	}
